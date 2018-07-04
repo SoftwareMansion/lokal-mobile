@@ -5,5 +5,12 @@
     "expo": "^28.0.0",
     "react": "16.3.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-28.0.0.tar.gz"
+  },
+  "devDependencies": {
+    "@types/react": "^16.4.6",
+    "@types/react-dom": "^16.0.6",
+    "@types/react-native": "^0.55.27",
+    "tslint": "^5.10.0",
+    "typescript": "^2.9.2"
   }
 }
