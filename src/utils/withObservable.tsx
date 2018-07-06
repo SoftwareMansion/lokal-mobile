@@ -16,7 +16,6 @@ export function withObservable<P>(observable: Observable<P>) {
 			subscription?: Subscription;
 
 			componentDidMount() {
-				debugger;
 				this.subscription = observable.subscribe((wrappedComponentProps: P) => {
 					this.setState({wrappedComponentProps});
 				});

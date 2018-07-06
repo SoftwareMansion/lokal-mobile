@@ -5,13 +5,14 @@ type Rejecter = (reason?: any) => void;
 type Response<T> = { data: T };
 type ServiceError = any;
 
+// axios.defaults.headers.common['Content-Type'] = 'application/json';
 export class CrudService<T, C> {
 
 	constructor(private baseUrl: string = '') {
 	}
 
 	find(params?: object): Promise<T[]> {
-    console.log('find');
+    console.log('find', this.baseUrl);
 
 		return new Promise<T[]>((resolve: Resolver<T[]>, reject: Rejecter) => {
       console.log('inside', this.baseUrl, params, {params});
@@ -39,7 +40,7 @@ export class CrudService<T, C> {
 
 	replace(id: number | string, model: T): Promise<T> {
 		return new Promise<T>((resolve: Resolver<T>, reject: Rejecter) => {
-			axios.put(`${this.baseUrl}/${id}`)
+			axios.put(`${this.baseUrl}/${id}`, model)
 				.then((response: Response<T>) => resolve(response.data))
 				.catch((err: ServiceError) => reject(err));
 		});
@@ -47,7 +48,7 @@ export class CrudService<T, C> {
 
 	update(id: number | string, model: T): Promise<T> {
 		return new Promise<T>((resolve: Resolver<T>, reject: Rejecter) => {
-			axios.patch(`${this.baseUrl}/${id}`)
+			axios.patch(`${this.baseUrl}/${id}`, model)
 				.then((response: Response<T>) => resolve(response.data))
 				.catch((err: ServiceError) => reject(err));
 		});

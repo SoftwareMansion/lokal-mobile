@@ -1,5 +1,5 @@
 import React from "react";
-import { FlatList, Button, View, Text, TextInput } from 'react-native';
+import { FlatList, Button, View, Text, TextInput, StyleSheet } from 'react-native';
 import { TodoEntity, CreateTodoEntity } from 'service-entities/todos';
 
 interface TodosListState {
@@ -10,20 +10,32 @@ export interface TodosListComponentProps {
  todos: TodoEntity[];
  refresh: () => void;
  addTodo: (todo: CreateTodoEntity) => void;
+ removeTodo: (id: string) => void;
+ completeTodo: (item: TodoEntity) => void;
 }
 
 export class TodosListComponent extends React.PureComponent<TodosListComponentProps, TodosListState> {
-  constructor(props: any) {
-    super(props);
-    console.log('todoliscompo');
-  }
-
   state = {
     todoText: ''
   };
 
+  completeTodo = (item: TodoEntity) => {
+    this.props.completeTodo(item);
+  }
+
+  removeTodo = (id: string) => {
+    this.props.removeTodo(id);
+  }
+
   renderItem = ({item}: {item:TodoEntity}) => (
-    <Text>{item.text}</Text>
+    <View key={item._id}>
+      <Text style={item.status === 'completed' && styles.strike}>{item.task}</Text>
+      <View>
+        <Text>{item.status}</Text>
+        <Button title="Done" onPress={() => this.completeTodo(item)} />
+        <Button title="Remove" onPress={() => this.removeTodo(item._id)} />
+      </View>
+    </View>
   )
 
   render() {
@@ -57,7 +69,11 @@ export class TodosListComponent extends React.PureComponent<TodosListComponentPr
   updateTodoText = (todoText: string) => this.setState({ todoText });
 
   addTodo = () => {
-    this.props.addTodo({text: this.state.todoText});
+    this.props.addTodo({task: this.state.todoText});
     this.setState({todoText: ''});
   };
 }
+
+const styles = StyleSheet.create({
+  strike: { textDecorationLine: 'line-through' },
+});

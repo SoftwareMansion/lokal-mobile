@@ -5,4 +5,5 @@ import combineLatestObj from './utils/combineLatestObj';
 
 const TodosListObservable = combineLatestObj<TodosListComponentProps>(todosListStore);
 
-export const TodosList = withObservable<TodosListComponentProps>(TodosListObservable)(TodosListComponent);
+const TodosList = withObservable<TodosListComponentProps>(TodosListObservable)(TodosListComponent);
+export default TodosList;

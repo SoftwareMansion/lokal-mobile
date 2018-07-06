@@ -12,7 +12,7 @@ export class TodosListStore {
   }
   // fetch todos from the server and update the value of todos
   readonly refresh = () => {
-    const todoEntity: TodoEntity[] = [{ id: 1, text: 'gre' }];
+    // const todoEntity: TodoEntity[] = [{ _id: '1', task: 'gre' }];
     // this.todos.next(todoEntity);
     console.log('refresh');
     return this.service.find().then((todos: TodoEntity[]) =>
@@ -21,13 +21,39 @@ export class TodosListStore {
   }
     // add the todo to the server and prepend it to our todos list
   readonly addTodo = (todo: CreateTodoEntity) => {
-    const addedTodo: TodoEntity = {...todo, id: i };
+    // const addedTodo: TodoEntity = {...todo, id: i };
     i++;
-    this.todos.next([addedTodo, ...this.todos.value])
-    // return this.service.create(todo).then(
-    //     (addedTodo: TodoEntity) =>
-    //       this.todos.next([addedTodo, ...this.todos.value])
-    // );
+    // this.todos.next([addedTodo, ...this.todos.value])
+    todo.status = 'pending';
+    return this.service.create(todo).then(
+        (addedTodo: TodoEntity) =>
+          this.todos.next([addedTodo, ...this.todos.value])
+    );
+  }
+
+  readonly completeTodo = (item: TodoEntity) => {
+    // const addedTodo: TodoEntity = {...todo, id: i };
+    // i++;
+    // this.todos.next([addedTodo, ...this.todos.value])
+    // todo.status = 'pending';
+    const updateObject = { _id: item._id, task: item.task, status: 'completed' };
+    return this.service.replace(item._id, updateObject).then(
+        (addedTodo: TodoEntity) =>
+          this.refresh()
+          // this.todos.next([addedTodo, ...this.todos.value])
+    );
+  }
+
+  readonly removeTodo = (id: string) => {
+    // const addedTodo: TodoEntity = {...todo, id: i };
+    // i++;
+    // this.todos.next([addedTodo, ...this.todos.value])
+    // todo.status = 'pending';
+    return this.service.delete(id).then(
+        () =>
+          this.refresh()
+          // this.todos.next([addedTodo, ...this.todos.value])
+    );
   }
 }
 

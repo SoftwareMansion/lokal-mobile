@@ -2,10 +2,11 @@ declare module 'service-entities/todos' {
 	import {TimestampedEntity} from 'service-entities/timestamped-entity';
 
 	export interface CreateTodoEntity {
-		text: string;
+		task: string;
+		status?: string;
 	}
 
 	export interface TodoEntity extends CreateTodoEntity, TimestampedEntity {
-		id: number;
+		_id: string;
 	}
 }
